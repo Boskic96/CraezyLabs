@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchControls : MonoBehaviour
 {
-    public delegate void ControllsInput(Vector3 position);
+    public delegate void ControllsInput(Vector2 position);
     public static ControllsInput PlayerInput;
 
     private bool isFirstTouch = true;
@@ -22,16 +22,19 @@ public class TouchControls : MonoBehaviour
                 isFirstTouch = false;
             }
 
+            //Calculating finger movement
             var currentTouch = touch.position;
             var returnVector = currentTouch - firstTouch;
 
-            Debug.Log(returnVector);
-            PlayerInput(returnVector);
-
+            
+            //Returning zero vector if finger is up
             if (touch.phase == TouchPhase.Ended)
             {
+                returnVector = Vector3.zero;
                 isFirstTouch = true;
             }
+
+            PlayerInput(returnVector);
         }
     }
 }
